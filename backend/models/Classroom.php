@@ -10,8 +10,9 @@ class Classroom
     private $items;
     private $students;
 
-    public function __construct(int $teacherId)
+    public function __construct(int $classroomId, int $teacherId)
     {
+        $this->classroomId = $classroomId;
         $this->teacherId = $teacherId;
         $this->items = array();
         $this->students = array();

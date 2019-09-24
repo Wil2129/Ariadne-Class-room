@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require_once "User.php";
 require_once "Classroom.php";
+require_once "Item.php";
 
 class Teacher extends User
 {
@@ -11,9 +12,9 @@ class Teacher extends User
     private $teacherId;
     private $classrooms;
 
-    public function __construct(string $name, string $email, string $password)
+    public function __construct(int $teacherId, string $name, string $email, string $password)
     {
-        parent::__construct($name, $email, $password);
+        parent::__construct($teacherId, $name, $email, $password);
         $this->teacherId = $this->uid;
         $this->type = self::TYPE;
         $this->classrooms = array();
@@ -29,16 +30,16 @@ class Teacher extends User
         return $this->classrooms;
     }
 
-    public function createClassroom(): void
+    public function createClassroom(int $classroomId): void
     {
-        $classroom = new Classroom($this->teacherId);
+        $classroom = new Classroom($classroomId, $this->teacherId);
         $this->classrooms[] = $classroom;
     }
 
-    public function createItemForClassroom(Classroom $classroom): void
+    public function createItemForClassroom(int $itemId, Classroom $classroom): void
     {
         if (in_array($classroom, $this->classrooms)) {
-            $item = new Item($this->teacherId, $classroom->classroomId);
+            $item = new Item($itemId, $this->teacherId, $classroom->classroomId);
             $classroom->addItem($item);
         }
     }

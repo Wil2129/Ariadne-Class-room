@@ -7,8 +7,9 @@ class Item
     private $classroomId;
     private $teacherId;
 
-    public function __construct(int $teacherId, int $classroomId)
+    public function __construct(int $itemId, int $teacherId, int $classroomId)
     {
+        $this->itemId = $itemId;
         $this->teacherId = $teacherId;
         $this->classroomId = $classroomId;
     }

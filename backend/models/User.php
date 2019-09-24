@@ -10,8 +10,9 @@ class User
     protected $phone;
     protected $type;
 
-    public function __construct(string $name, string $email, string $password)
+    public function __construct(int $uid, string $name, string $email, string $password)
     {
+        $this->uid = $uid;
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
