@@ -121,22 +121,22 @@ CREATE INDEX `fk_items_classrooms1_idx` ON `ariadne_classroom`.`items` (`classro
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `ariadne_classroom`.`classrooms_has_students`
+-- Table `ariadne_classroom`.`classrooms_have_students`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ariadne_classroom`.`classrooms_has_students` ;
+DROP TABLE IF EXISTS `ariadne_classroom`.`classrooms_have_students` ;
 
 SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS `ariadne_classroom`.`classrooms_has_students` (
+CREATE TABLE IF NOT EXISTS `ariadne_classroom`.`classrooms_have_students` (
   `classroom_id` INT NOT NULL,
   `teacher_id` INT NOT NULL,
   `student_id` INT NOT NULL,
   PRIMARY KEY (`classroom_id`, `teacher_id`, `student_id`),
-  CONSTRAINT `fk_classrooms_has_students_classrooms1`
+  CONSTRAINT `fk_classrooms_have_students_classrooms1`
     FOREIGN KEY (`classroom_id` , `teacher_id`)
     REFERENCES `ariadne_classroom`.`classrooms` (`classroom_id` , `teacher_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_classrooms_has_students_students1`
+  CONSTRAINT `fk_classrooms_have_students_students1`
     FOREIGN KEY (`student_id`)
     REFERENCES `ariadne_classroom`.`students` (`student_id`)
     ON DELETE NO ACTION
@@ -144,10 +144,10 @@ CREATE TABLE IF NOT EXISTS `ariadne_classroom`.`classrooms_has_students` (
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
-CREATE INDEX `fk_classrooms_has_students_students1_idx` ON `ariadne_classroom`.`classrooms_has_students` (`student_id` ASC) VISIBLE;
+CREATE INDEX `fk_classrooms_have_students_students1_idx` ON `ariadne_classroom`.`classrooms_have_students` (`student_id` ASC) VISIBLE;
 
 SHOW WARNINGS;
-CREATE INDEX `fk_classrooms_has_students_classrooms1_idx` ON `ariadne_classroom`.`classrooms_has_students` (`classroom_id` ASC, `teacher_id` ASC) VISIBLE;
+CREATE INDEX `fk_classrooms_have_students_classrooms1_idx` ON `ariadne_classroom`.`classrooms_have_students` (`classroom_id` ASC, `teacher_id` ASC) VISIBLE;
 
 SHOW WARNINGS;
 

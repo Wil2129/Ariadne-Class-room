@@ -4,22 +4,22 @@ require_once "database.php";
 require_once "../models/Student.php";
 require_once "../models/Classroom.php";
 
-function registerStudentToClassroom(Student $student, Classroom $classroom): void
+function registerStudentToClassroom(Classroom $classroom, Student $student): void
 {
-    $studentId = $student->getId();
     $classroomId = $classroom->getId();
     $teacherId = $classroom->getTeacherId();
+    $studentId = $student->getId();
     
     try {
-        $stmt = $db->prepare("INSERT INTO class_has_students (student_id, classroom_id, teacher_id) VALUES (?, ?, ?)");
-        $stmt->bindParam(1, $studentId);
-        $stmt->bindParam(2, $classroomId);
-        $stmt->bindParam(3, $teacherId);
+        $stmt = $db->prepare("INSERT INTO classrooms_have_students (classroom_id, teacher_id, student_id) VALUES (?, ?, ?)");
+        $stmt->bindParam(1, $classroomId);
+        $stmt->bindParam(2, $teacherId);
+        $stmt->bindParam(3, $studentId);
         $stmt->execute();
 
         $student->registerToClassroom($classroom);
     } catch (PDOException $e) {
-        echo "Could not register student $studentId to classroom $classroomId" . $e->getMessage();
+        echo "Could not register student $studentId to classroom $classroomId: " . $e->getMessage();
     }
 }
 ?>

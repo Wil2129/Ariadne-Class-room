@@ -22,7 +22,7 @@ class Auth
             $stmt->bindParam(4, $user->getType());
             $stmt->execute();
         } catch (PDOException $e) {
-            echo "Could not register user into database. " . $e->getMessage();
+            echo "Could not register user into database: " . $e->getMessage();
         }
     }
 
@@ -44,7 +44,7 @@ class Auth
                 }
             }
         } catch (PDOException $e) {
-            echo "Could not sign in user. " . $e->getMessage();
+            echo "Could not sign in user: " . $e->getMessage();
         }
     }
 }
