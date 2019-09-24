@@ -7,13 +7,16 @@ class Classroom
 {
     private $classroomId;
     private $teacherId;
+    private $name;
+    private $description;
     private $items;
     private $students;
 
-    public function __construct(int $classroomId, int $teacherId)
+    public function __construct(int $classroomId, int $teacherId, string $name)
     {
         $this->classroomId = $classroomId;
         $this->teacherId = $teacherId;
+        $this->name = $name;
         $this->items = array();
         $this->students = array();
     }
@@ -28,9 +31,29 @@ class Classroom
         return $this->teacherId;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
     public function getItems(): array
     {
         return $this->items;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
     public function addItem(Item $item): void
@@ -38,7 +61,7 @@ class Classroom
         $this->items[] = $item;
     }
 
-    public function addStudent(Student $student): void
+    public function registerStudent(Student $student): void
     {
         $this->students[] = $student;
     }

@@ -30,16 +30,16 @@ class Teacher extends User
         return $this->classrooms;
     }
 
-    public function createClassroom(int $classroomId): void
+    public function createClassroom(int $classroomId, string $name): void
     {
-        $classroom = new Classroom($classroomId, $this->teacherId);
+        $classroom = new Classroom($classroomId, $this->teacherId, $name);
         $this->classrooms[] = $classroom;
     }
 
-    public function createItemForClassroom(int $itemId, Classroom $classroom): void
+    public function createItemForClassroom(int $itemId, Classroom $classroom, string $title): void
     {
         if (in_array($classroom, $this->classrooms)) {
-            $item = new Item($itemId, $this->teacherId, $classroom->classroomId);
+            $item = new Item($itemId, $this->teacherId, $classroom->classroomId, $title);
             $classroom->addItem($item);
         }
     }

@@ -33,7 +33,7 @@ class Student extends User
     public function registerToClassroom(Classroom $classroom): void
     {
         $this->classrooms[] = $classroom;
-        $classroom->addStudent($this);
+        $classroom->registerStudent($this);
     }
 
     public function getItems(Classroom $classroom): array

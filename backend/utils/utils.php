@@ -8,17 +8,17 @@ require_once "../models/Classroom.php";
 require_once "../models/Item.php";
 
 
-function teacherCreateClassroom(Teacher $teacher): void
+function teacherCreateClassroom(Teacher $teacher, string $name): void
 {
     $teacherId = $teacher->getId();
     try {
-        $stmt = $db->prepare("INSERT INTO classrooms (teacher_id) VALUES (:teacher_id)");
-        $stmt->execute(array(':teacher_id' => $teacherId));
+        $stmt = $db->prepare("INSERT INTO classrooms (teacher_id, name) VALUES (:teacher_id, :name)");
+        $stmt->execute(array(':teacher_id' => $teacherId, ':name' => $name));
 
         $id = $db->lastInsertId();
-        $teacher->createClassroom($id);
+        $teacher->createClassroom($id, $name);
     } catch (PDOException $e) {
-        echo "Teacher $teacherId could not create classroom: " . $e->getMessage();
+        echo "Teacher $teacherId could not create classroom $name: " . $e->getMessage();
     }
 }
 
