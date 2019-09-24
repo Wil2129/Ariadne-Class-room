@@ -6,69 +6,45 @@ require_once "../models/Student.php";
 
 class Auth
 {
-    public static function signUpTeacher(string $name, string $email, string $password): void
+    public static function signUp(string $name, string $email, string $password, string $type): void
     {
         try {
-            $teacher = new Teacher($name, $email, $password);
+            if ($type === 'student') {
+                $user = new Student($name, $email, $password);
+            } elseif ($type === 'teacher') {
+                $user = new Teacher($name, $email, $password);
+            }
 
             $stmt = $db->prepare("INSERT INTO users (name, email, password, type) VALUES (?, ?, ?, ?)");
-            $stmt->bindParam(1, $teacher->getName());
-            $stmt->bindParam(2, $teacher->getEmail());
-            $stmt->bindParam(3, $teacher->getPassword());
-            $stmt->bindParam(4, $teacher->getType());
+            $stmt->bindParam(1, $user->getName());
+            $stmt->bindParam(2, $user->getEmail());
+            $stmt->bindParam(3, $user->getPassword());
+            $stmt->bindParam(4, $user->getType());
             $stmt->execute();
         } catch (PDOException $e) {
-            echo "Could not register teacher into database" . $e->getMessage();
+            echo "Could not register user into database. " . $e->getMessage();
         }
     }
 
-    public static function signInTeacher(string $email, string $password): ?Teacher
+    public static function signIn(string $email, string $password, string $type): ?User
     {
         try {
-            $stmt = $db->prepare("SELECT * FROM users WHERE email=? AND password=? AND type='teacher'");
+            $stmt = $db->prepare("SELECT * FROM users WHERE email=? AND password=? AND type=?");
             $stmt->bindParam(1, $email);
             $stmt->bindParam(2, $password);
+            $stmt->bindParam(2, $type);
             $stmt->execute();
 
             $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
             while ($row = $stmt->fetch()) {
-                return new Teacher($row['name'], $row['email'], $row['password']);
+                if ($type === 'student') {
+                    return new Student($row['name'], $row['email'], $row['password']);
+                } elseif ($type === 'teacher') {
+                    return new Teacher($row['name'], $row['email'], $row['password']);
+                }
             }
         } catch (PDOException $e) {
-            echo "Could not register teacher into database" . $e->getMessage();
-        }
-    }
-
-    public static function signUpStudent(string $name, string $email, string $password): void
-    {
-        try {
-            $teacher = new Student($name, $email, $password);
-
-            $stmt = $db->prepare("INSERT INTO users (name, email, password, type) VALUES (?, ?, ?, ?)");
-            $stmt->bindParam(1, $teacher->getName());
-            $stmt->bindParam(2, $teacher->getEmail());
-            $stmt->bindParam(3, $teacher->getPassword());
-            $stmt->bindParam(4, $teacher->getType());
-            $stmt->execute();
-        } catch (PDOException $e) {
-            echo "Could not register teacher into database" . $e->getMessage();
-        }
-    }
-
-    public static function signInStudent(string $email, string $password): ?Student
-    {
-        try {
-            $stmt = $db->prepare("SELECT * FROM users WHERE email=? AND password=? AND type='teacher'");
-            $stmt->bindParam(1, $email);
-            $stmt->bindParam(2, $password);
-            $stmt->execute();
-
-            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            while ($row = $stmt->fetch()) {
-                return new Student($row['name'], $row['email'], $row['password']);
-            }
-        } catch (PDOException $e) {
-            echo "Could not register teacher into database" . $e->getMessage();
+            echo "Could not sign in user. " . $e->getMessage();
         }
     }
 }
