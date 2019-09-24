@@ -162,7 +162,7 @@ USE `ariadne_classroom`$$
 DROP TRIGGER IF EXISTS `ariadne_classroom`.`users_AFTER_INSERT` $$
 SHOW WARNINGS$$
 USE `ariadne_classroom`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`users_AFTER_INSERT` AFTER INSERT ON `users` FOR EACH ROW
+CREATE DEFINER = CURRENT_USER TRIGGER `ariadne_classroom`.`users_AFTER_INSERT` AFTER INSERT ON `users` FOR EACH ROW
 BEGIN
 	IF NEW.`type` = 'teacher' THEN
 		INSERT INTO `teachers` SET `teacher_id` = NEW.`uid`;
