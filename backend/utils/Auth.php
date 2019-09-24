@@ -32,7 +32,7 @@ class Auth
             $stmt = $db->prepare("SELECT * FROM users WHERE email=? AND password=? AND type=?");
             $stmt->bindParam(1, $email);
             $stmt->bindParam(2, $password);
-            $stmt->bindParam(2, $type);
+            $stmt->bindParam(3, $type);
             $stmt->execute();
 
             $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
