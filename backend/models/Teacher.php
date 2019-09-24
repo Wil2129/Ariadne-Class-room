@@ -7,6 +7,7 @@ class Teacher extends User
 {
     const TYPE = 'teacher';
 
+    private $type = self::TYPE;
     private $teacherId;
     private $classrooms;
 

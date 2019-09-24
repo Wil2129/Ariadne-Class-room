@@ -11,7 +11,7 @@ function registerStudentToClassroom(Student $student, Classroom $classroom): voi
     $teacherId = $classroom->getTeacherId();
     
     try {
-        $stmt = $db->prepare("INSERT INTO class_has_students (student_id, class_id, teacher_id) VALUES (?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO class_has_students (student_id, classroom_id, teacher_id) VALUES (?, ?, ?)");
         $stmt->bindParam(1, $studentId);
         $stmt->bindParam(2, $classroomId);
         $stmt->bindParam(3, $teacherId);
