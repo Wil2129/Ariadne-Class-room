@@ -8,7 +8,7 @@ require_once "../models/Classroom.php";
 require_once "../models/Item.php";
 
 
-function teacherCreateClassroom(Teacher $teacher, string $name): void
+function createClassroom(Teacher $teacher, string $name): void
 {
     $teacherId = $teacher->getId();
     try {
