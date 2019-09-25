@@ -19,7 +19,7 @@ class Auth
             } elseif ($type === 'teacher') {
                 $user = new Teacher($id, $name, $email, $password);
             }
-            
+
             return TRUE;
         } catch (PDOException $e) {
             echo "Could not register user into database: " . $e->getMessage();
@@ -30,7 +30,7 @@ class Auth
     public static function signIn(string $email, string $password, string $type): ?User
     {
         try {
-            $stmt = $db->prepare("SELECT * FROM users WHERE email=:email AND password = :password AND type = :type");
+            $stmt = $db->prepare("SELECT * FROM users WHERE email = :email AND password = :password AND type = :type");
             $stmt->execute(array(':email' => $email, ':password' => $password, ':type' => $type));
 
             $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);

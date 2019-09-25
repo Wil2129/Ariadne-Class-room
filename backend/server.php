@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if($_POST['remember']){
                     setcookie("CurrentUser", $currentUser);
                 }
-                $_SESSION['current_user'] = $currentUser;
+                $_SESSION['current_user'] = &$currentUser;
                 header('Location: ../frontend/welcome.php');
                 exit;
             } else {
@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (isset($_POST['add_classroom_item'])) {
         $title = $_POST['title'];
         $content = $_POST['content'];
+        $classroom = getClassroom($_POST['classroom_id']);
         $fileUrl = NULL;
         if(isset($_FILES['files'])){
             $fileUrl = '../uploads/' . basename($_FILES['files']['name']);
@@ -68,13 +69,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         if (Auth::validateInput($title)) {
             Auth::validateInput($content);
-            $item = addItemToClassroom($_SESSION['current_user'], NULL, $title, $content,$fileUrl);
-            if ($classroom) {
+            $item = addItemToClassroom($_SESSION['current_user'], $classroom, $title, $content,$fileUrl);
+            if ($item) {
                 header('Location: ../frontend/home.php');
                 exit;
             } else {
 
             }
+        }
+    } elseif (isset($_POST['register_to_classroom'])) {
+        $classroom = getClassroom($_POST['classroom_id']);
+        $registerToClassroom = registerStudentToClassroom($_SESSION['current_user'], $classroom);
+        if ($registerToClassroom) {
+            header('Location: ../frontend/home.php');
+            exit;
+        } else {
+
         }
     }
 }

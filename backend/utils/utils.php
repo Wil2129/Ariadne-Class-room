@@ -8,7 +8,7 @@ require_once "../models/Classroom.php";
 require_once "../models/Item.php";
 
 
-function createClassroom(Teacher $teacher, string $name, string $description = NULL): bool
+function createClassroom(Teacher &$teacher, string $name, string $description = NULL): bool
 {
     $teacherId = $teacher->getId();
     try {
@@ -25,7 +25,7 @@ function createClassroom(Teacher $teacher, string $name, string $description = N
     }
 }
 
-function addItemToClassroom(Teacher $teacher, Classroom $classroom, string $title, string $content = NULL, string $filesUrl = NULL): bool
+function addItemToClassroom(Teacher &$teacher, Classroom &$classroom, string $title, string $content = NULL, string $filesUrl = NULL): bool
 {
     $teacherId = $teacher->getId();
     $classroomId = $classroom->getId();
@@ -43,7 +43,7 @@ function addItemToClassroom(Teacher $teacher, Classroom $classroom, string $titl
     }
 }
 
-function registerStudentToClassroom(Classroom $classroom, Student $student): bool
+function registerStudentToClassroom(Classroom &$classroom, Student &$student): bool
 {
     $classroomId = $classroom->getId();
     $teacherId = $classroom->getTeacherId();
@@ -62,7 +62,23 @@ function registerStudentToClassroom(Classroom $classroom, Student $student): boo
     }
 }
 
-function cast($object, $className) { 
+function getClassroom(string $classroomId): ?Classroom
+{
+    try {
+        $stmt = $db->prepare("SELECT * FROM classrooms WHERE classroom_id = :classroom_id");
+        $stmt->execute(array(':classroom_id' => $classroomId));
+
+        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        while ($row = $stmt->fetch()) {
+            return new Classroom($row['classroom_id'], $row['teacher_id'], $row['name'], $row['description']);
+        }
+    } catch (PDOException $e) {
+        echo "Could not sign in user: " . $e->getMessage();
+    }
+}
+
+function cast($object, $className) 
+{ 
     return unserialize(sprintf('O:%d:"%s"%s', strlen($className), $className, strstr(strstr(serialize($object), '"'), ':'))); 
 } 
 ?>
