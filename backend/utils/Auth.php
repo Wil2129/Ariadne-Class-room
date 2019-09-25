@@ -19,6 +19,7 @@ class Auth
             } elseif ($type === 'teacher') {
                 $user = new Teacher($id, $name, $email, $password);
             }
+            
             return TRUE;
         } catch (PDOException $e) {
             echo "Could not register user into database: " . $e->getMessage();

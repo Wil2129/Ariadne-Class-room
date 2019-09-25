@@ -47,29 +47,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif (isset($_POST['create_classroom'])) {
         $name = $_POST['name'];
-        $email = $_POST['email'];
-        $password1 = $_POST['password1'];
-        $password2 = $_POST['password2'];
-        $type = $_POST['type'];
-        if (Auth::validateName($name) and Auth::validateEmail($email) and Auth::confirmPasswords($password1, $password2)) {
-            $signUp = Auth::signUp($name,$email, md5($password1), $type);
+        $description = $_POST['description'];
+        if (Auth::validateInput($name)) {
+            Auth::validateInput($description);
+            $classroom = createClassroom($_SESSION['current_user'], $name, $description);
             if ($signUp) {
-                header('Location: ../frontend/sign_in.php');
+                header('Location: ../frontend/home.php');
                 exit;
             } else {
 
             }
         }
-    } elseif (isset($_POST['sign_up'])) {
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $password1 = $_POST['password1'];
-        $password2 = $_POST['password2'];
-        $type = $_POST['type'];
-        if (Auth::validateName($name) and Auth::validateEmail($email) and Auth::confirmPasswords($password1, $password2)) {
-            $signUp = Auth::signUp($name,$email, md5($password1), $type);
-            if ($signUp) {
-                header('Location: ../frontend/sign_in.php');
+    } elseif (isset($_POST['add_classroom_item'])) {
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $fileUrl = NULL;
+        if(isset($_FILES['files'])){
+            $fileUrl = '../uploads/' . basename($_FILES['files']['name']);
+            move_uploaded_file($_FILES['userfile']['tmp_name'], $fileUrl);
+        }
+        if (Auth::validateInput($title)) {
+            Auth::validateInput($content);
+            $item = addItemToClassroom($_SESSION['current_user'], NULL, $title, $content,$fileUrl);
+            if ($classroom) {
+                header('Location: ../frontend/home.php');
                 exit;
             } else {
 
