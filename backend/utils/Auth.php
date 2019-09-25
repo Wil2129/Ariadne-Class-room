@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
-require_once "database.php";
-require_once "../models/User.php";
-require_once "../models/Teacher.php";
-require_once "../models/Student.php";
+require_once 'database.php';
+require_once '../models/User.php';
+require_once '../models/Teacher.php';
+require_once '../models/Student.php';
 
 class Auth
 {
-    public static function signUp(string $name, string $email, string $password, string $type): void
+    public static function signUp(string $name, string $email, string $password, string $type): bool
     {
         try {
             $stmt = $db->prepare("INSERT INTO users (name, email, password, type) VALUES (:name, :email, :password, :type)");
@@ -19,8 +19,10 @@ class Auth
             } elseif ($type === 'teacher') {
                 $user = new Teacher($id, $name, $email, $password);
             }
+            return TRUE;
         } catch (PDOException $e) {
             echo "Could not register user into database: " . $e->getMessage();
+            return FALSE;
         }
     }
 
@@ -42,5 +44,54 @@ class Auth
             echo "Could not sign in user: " . $e->getMessage();
         }
     }
+
+    public static function validateInput(string &$input): bool
+    {
+        $input = htmlspecialchars(stripslashes(trim($input)));
+        if (empty($input)) {
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
+    public static function validateName(string &$name): bool
+    {
+        if (validateInput($name)) {
+            if (!preg_match("/^[a-zA-Z'\s]+$/", $name)) {
+                return FALSE;
+            } else {
+                return TRUE;
+            }
+        }
+    }
+
+    public static function validateEmail(string &$email): bool
+    {
+        if (validateInput($email)) {
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        }
+    }
+
+    public static function validatePassword(string $password): bool
+    {
+        if (strlen($password1) >= 6) {
+             return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public static function confirmPasswords(string &$password1, string &$password2): bool
+    {
+        if (($password1 === $password2) and validatePassword($password1)) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
 }
-?>
