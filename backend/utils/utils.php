@@ -22,6 +22,21 @@ function createClassroom(Teacher $teacher, string $name): void
     }
 }
 
+function addItemToClassroom(Teacher $teacher, Classroom $classroom, string $title): void
+{
+    $teacherId = $teacher->getId();
+    $classroomId = $classroom->getId();
+    try {
+        $stmt = $db->prepare("INSERT INTO items (classroom_id, teacher_id, title) VALUES (:classroom_id, :teacher_id, :title)");
+        $stmt->execute(array(':classroom_id' => $classroomId, ':teacher_id' => $teacherId, ':title' => $title));
+
+        $id = $db->lastInsertId();
+        $teacher->addItemToClassroom($id,  $classroom, $title);
+    } catch (PDOException $e) {
+        echo "Teacher $teacherId could not create classroom $name: " . $e->getMessage();
+    }
+}
+
 function registerStudentToClassroom(Classroom $classroom, Student $student): void
 {
     $classroomId = $classroom->getId();

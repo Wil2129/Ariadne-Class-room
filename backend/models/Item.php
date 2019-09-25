@@ -10,7 +10,7 @@ class Item
     private $content;
     private $filesUrl;
 
-    public function __construct(int $itemId, int $teacherId, int $classroomId, string $title)
+    public function __construct(int $itemId, int $classroomId, int $teacherId, string $title)
     {
         $this->itemId = $itemId;
         $this->teacherId = $teacherId;
