@@ -12,13 +12,16 @@ class Classroom
     private $items;
     private $students;
 
-    public function __construct(int $classroomId, int $teacherId, string $name)
+    public function __construct(int $classroomId, int $teacherId, string $name, string $description = NULL)
     {
         $this->classroomId = $classroomId;
         $this->teacherId = $teacherId;
         $this->name = $name;
         $this->items = array();
         $this->students = array();
+        if (!is_null($description)){
+            $this->description = $description;
+        }
     }
 
     public function getId(): int

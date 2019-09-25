@@ -22,10 +22,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($currentUser)) {
                 if($_POST['remember']){
                     setcookie("CurrentUser", $currentUser);
-                } else {
-                    $_SESSION['current_user'] = $currentUser;
                 }
+                $_SESSION['current_user'] = $currentUser;
                 header('Location: ../frontend/welcome.php');
+                exit;
+            } else {
+
+            }
+        }
+    } elseif (isset($_POST['sign_up'])) {
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $password1 = $_POST['password1'];
+        $password2 = $_POST['password2'];
+        $type = $_POST['type'];
+        if (Auth::validateName($name) and Auth::validateEmail($email) and Auth::confirmPasswords($password1, $password2)) {
+            $signUp = Auth::signUp($name,$email, md5($password1), $type);
+            if ($signUp) {
+                header('Location: ../frontend/sign_in.php');
+                exit;
+            } else {
+
+            }
+        }
+    } elseif (isset($_POST['create_classroom'])) {
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $password1 = $_POST['password1'];
+        $password2 = $_POST['password2'];
+        $type = $_POST['type'];
+        if (Auth::validateName($name) and Auth::validateEmail($email) and Auth::confirmPasswords($password1, $password2)) {
+            $signUp = Auth::signUp($name,$email, md5($password1), $type);
+            if ($signUp) {
+                header('Location: ../frontend/sign_in.php');
                 exit;
             } else {
 

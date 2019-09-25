@@ -8,30 +8,30 @@ require_once "../models/Classroom.php";
 require_once "../models/Item.php";
 
 
-function createClassroom(Teacher $teacher, string $name): void
+function createClassroom(Teacher $teacher, string $name, string $description = NULL): void
 {
     $teacherId = $teacher->getId();
     try {
-        $stmt = $db->prepare("INSERT INTO classrooms (teacher_id, name) VALUES (:teacher_id, :name)");
-        $stmt->execute(array(':teacher_id' => $teacherId, ':name' => $name));
+        $stmt = $db->prepare("INSERT INTO classrooms (teacher_id, name, description) VALUES (:teacher_id, :name, :description)");
+        $stmt->execute(array(':teacher_id' => $teacherId, ':name' => $name, ':description' => $description));
 
         $id = $db->lastInsertId();
-        $teacher->createClassroom($id, $name);
+        $teacher->createClassroom($id, $name, $description);
     } catch (PDOException $e) {
         echo "Teacher $teacherId could not create classroom $name: " . $e->getMessage();
     }
 }
 
-function addItemToClassroom(Teacher $teacher, Classroom $classroom, string $title): void
+function addItemToClassroom(Teacher $teacher, Classroom $classroom, string $title, string $content = NULL, string $filesUrl = NULL): void
 {
     $teacherId = $teacher->getId();
     $classroomId = $classroom->getId();
     try {
-        $stmt = $db->prepare("INSERT INTO items (classroom_id, teacher_id, title) VALUES (:classroom_id, :teacher_id, :title)");
-        $stmt->execute(array(':classroom_id' => $classroomId, ':teacher_id' => $teacherId, ':title' => $title));
+        $stmt = $db->prepare("INSERT INTO items (classroom_id, teacher_id, title, content, files_url) VALUES (:classroom_id, :teacher_id, :title, :content, :files_url)");
+        $stmt->execute(array(':classroom_id' => $classroomId, ':teacher_id' => $teacherId, ':title' => $title, ':content' => $content, ':files_url' => $filesUrl));
 
         $id = $db->lastInsertId();
-        $teacher->addItemToClassroom($id,  $classroom, $title);
+        $teacher->addItemToClassroom($id,  $classroom, $title, $content, $filesUrl);
     } catch (PDOException $e) {
         echo "Teacher $teacherId could not create classroom $name: " . $e->getMessage();
     }

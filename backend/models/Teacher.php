@@ -12,9 +12,9 @@ class Teacher extends User
     private $teacherId;
     private $classrooms;
 
-    public function __construct(int $teacherId, string $name, string $email, string $password)
+    public function __construct(int $teacherId, string $name, string $email, string $password, string $phone = NULL)
     {
-        parent::__construct($teacherId, $name, $email, $password);
+        parent::__construct($teacherId, $name, $email, $password, $phone);
         $this->teacherId = $this->uid;
         $this->type = self::TYPE;
         $this->classrooms = array();
@@ -30,16 +30,16 @@ class Teacher extends User
         return $this->classrooms;
     }
 
-    public function createClassroom(int $classroomId, string $name): void
+    public function createClassroom(int $classroomId, string $name, string $description = NULL): void
     {
-        $classroom = new Classroom($classroomId, $this->teacherId, $name);
+        $classroom = new Classroom($classroomId, $this->teacherId, $name, $description);
         $this->classrooms[] = $classroom;
     }
 
-    public function addItemToClassroom(int $itemId, Classroom $classroom, string $title): void
+    public function addItemToClassroom(int $itemId, Classroom $classroom, string $title, string $content = NULL, string $filesUrl = NULL): void
     {
         if (in_array($classroom, $this->classrooms)) {
-            $item = new Item($itemId, $classroom->classroomId, $this->teacherId, $title);
+            $item = new Item($itemId, $classroom->classroomId, $this->teacherId, $title, $content, $filesUrl);
             $classroom->addItem($item);
         }
     }

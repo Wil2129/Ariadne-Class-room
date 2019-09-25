@@ -12,9 +12,9 @@ class Student extends User
     private $studentId;
     private $classrooms;
 
-    public function __construct(int $studentId, string $name, string $email, string $password)
+    public function __construct(int $studentId, string $name, string $email, string $password, string $phone = NULL)
     {
-        parent::__construct($studentId, $name, $email, $password);
+        parent::__construct($studentId, $name, $email, $password, $phone);
         $this->studentId = $this->uid;
         $this->type = self::TYPE;
         $this->classrooms = array();

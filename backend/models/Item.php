@@ -10,12 +10,18 @@ class Item
     private $content;
     private $filesUrl;
 
-    public function __construct(int $itemId, int $classroomId, int $teacherId, string $title)
+    public function __construct(int $itemId, int $classroomId, int $teacherId, string $title, string $content = NULL, string $filesUrl = NULL)
     {
         $this->itemId = $itemId;
         $this->teacherId = $teacherId;
         $this->classroomId = $classroomId;
         $this->title = $title;
+        if (!is_null($content)){
+            $this->content = $content;
+        }
+        if (!is_null($filesUrl)){
+            $this->filesUrl = $filesUrl;
+        }
     }
 
     public function getId(): int
